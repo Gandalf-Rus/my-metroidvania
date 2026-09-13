@@ -11,7 +11,12 @@ export class BootScene extends Phaser.Scene {
 
     if ('fonts' in document) {
       try {
-        await document.fonts.ready;
+        await Promise.all([
+          document.fonts.load('8px "Silkscreen"'),
+          document.fonts.load('16px "Silkscreen"'),
+          document.fonts.load('bold 16px "Silkscreen"'),
+          document.fonts.ready,
+        ]);
       } catch (e) {
         console.warn('Font loading check:', e);
       }

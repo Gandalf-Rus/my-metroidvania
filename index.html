@@ -5,11 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>Metroidvania - 2D Platformer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- Preload local pixel font assets directly from site origin -->
+    <link rel="preload" href="/fonts/silkscreen-regular.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="/fonts/silkscreen-bold.ttf" as="font" type="font/ttf" crossorigin />
   </head>
   <body>
+    <!-- Hidden DOM probe to guarantee immediate browser font compilation before canvas init -->
+    <div id="font-preloader" style="font-family: 'Silkscreen'; font-size: 8px; position: absolute; left: -9999px; top: -9999px; pointer-events: none; opacity: 0;" aria-hidden="true">
+      ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]():|•*-+
+    </div>
     <div id="game-container"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
