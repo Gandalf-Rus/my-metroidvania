@@ -86,10 +86,12 @@ export class UIScene extends Phaser.Scene {
     // Update Debug Telemetry
     if (this.debugPanelVisible) {
       const fps = Math.round(this.game.loop.actualFps);
+      const safePos = this.gameScene.getLastSafePosition();
       this.debugText.setText(
         `FPS: ${fps}\n` +
         `Vel: [${stats.velocityX}, ${stats.velocityY}]\n` +
         `Grounded: ${stats.isGrounded ? 'YES' : 'NO'}\n` +
+        `SafePos: [${safePos.x}, ${safePos.y}]\n` +
         `Coyote: ${stats.coyoteTimer}ms\n` +
         `JumpBuf: ${stats.jumpBufferTimer}ms\n` +
         `WallSlide: ${stats.isWallSliding ? 'YES' : 'NO'}\n` +
@@ -229,7 +231,22 @@ export class UIScene extends Phaser.Scene {
     subtitleText.setPosition(Math.round(-subtitleText.width / 2), 6);
     subtitleText.setOrigin(0, 0);
 
-    banner.add([titleText, subtitleText]);
+    const zoneColor = room.zone === 'Frostpeak Reach' ? '#38bdf8' : '#34d399';
+    const zoneText = new PixelText(
+      this,
+      0,
+      0,
+      `~ ${room.zone.toUpperCase()} ~`,
+      {
+        fontSize: '8px',
+        color: zoneColor,
+        letterSpacing: 2,
+      }
+    );
+    zoneText.setPosition(Math.round(-zoneText.width / 2), -24);
+    zoneText.setOrigin(0, 0);
+
+    banner.add([zoneText, titleText, subtitleText]);
     banner.setAlpha(0);
 
     this.tweens.add({

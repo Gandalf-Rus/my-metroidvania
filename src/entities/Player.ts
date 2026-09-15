@@ -33,8 +33,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private dashCooldownTimer: number = 0;
   private attackCooldownTimer: number = 0;
   private downSlashTimer: number = 0;
-  private spikeInvulnerableTimer: number = 0;
+  private pogoRecoilTimer: number = 0;
+  private invulnerableTimer: number = 0;
   private pogoStallTimer: number = 0;
+  private invulnerableTween?: Phaser.Tweens.Tween;
 
   private isDashing: boolean = false;
   private isDownSlashing: boolean = false;
@@ -129,8 +131,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.isDownSlashing = false;
       }
     }
-    if (this.spikeInvulnerableTimer > 0) {
-      this.spikeInvulnerableTimer = Math.max(0, this.spikeInvulnerableTimer - dt);
+    if (this.pogoRecoilTimer > 0) {
+      this.pogoRecoilTimer = Math.max(0, this.pogoRecoilTimer - dt);
+    }
+    if (this.invulnerableTimer > 0) {
+      this.invulnerableTimer = Math.max(0, this.invulnerableTimer - dt);
+      if (this.invulnerableTimer <= 0 && this.invulnerableTween) {
+        this.invulnerableTween.stop();
+        this.invulnerableTween = undefined;
+        this.setAlpha(1);
+      }
     }
     if (this.pogoStallTimer > 0) {
       this.pogoStallTimer = Math.max(0, this.pogoStallTimer - dt);
@@ -389,7 +399,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.isDownSlashing = false;
     this.downSlashTimer = 0;
     this.attackCooldownTimer = 60; // Ready on descent for next rhythmic bounce
-    this.spikeInvulnerableTimer = 130; // Grace period (ms) so upward launch doesn't clip spike
+    this.pogoRecoilTimer = 130; // Grace period (ms) so upward launch doesn't clip spike
     this.pogoStallTimer = 90; // Prevent immediate fast-fall from pulling player straight down
 
     // Pogo sparkle
@@ -400,8 +410,52 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     return this.isDownSlashing;
   }
 
+  public isPogoRecoil(): boolean {
+    return this.pogoRecoilTimer > 0;
+  }
+
+  public isInvulnerable(): boolean {
+    return this.invulnerableTimer > 0;
+  }
+
   public isInvulnerableToSpikes(): boolean {
-    return this.spikeInvulnerableTimer > 0;
+    // Spikes ignore damage invulnerability! Only pogo recoil window protects.
+    return this.pogoRecoilTimer > 0;
+  }
+
+  /**
+   * Post-resurrection visual recovery flicker.
+   * NOTE: Does not grant immunity to spikes - spikes always hurt and resurrect.
+   */
+  public triggerInvulnerability(durationMs: number = 800): void {
+    this.invulnerableTimer = Math.max(this.invulnerableTimer, durationMs);
+
+    if (this.invulnerableTween) {
+      this.invulnerableTween.stop();
+      this.invulnerableTween = undefined;
+    }
+    this.setAlpha(1);
+
+    const repeats = Math.max(1, Math.floor(durationMs / 160));
+    this.invulnerableTween = this.scene.tweens.add({
+      targets: this,
+      alpha: 0.25,
+      duration: 80,
+      yoyo: true,
+      repeat: repeats,
+      onComplete: () => {
+        this.setAlpha(1);
+        this.invulnerableTween = undefined;
+      },
+    });
+  }
+
+  public cancelSpecialStates(): void {
+    this.isDashing = false;
+    this.dashTimer = 0;
+    this.isDownSlashing = false;
+    this.downSlashTimer = 0;
+    this.body.setAllowGravity(true);
   }
 
   public getDownSlashBounds(): Phaser.Geom.Rectangle {

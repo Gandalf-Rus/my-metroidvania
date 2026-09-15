@@ -248,6 +248,103 @@ export class BootScene extends Phaser.Scene {
       ctx.fillRect(11, 2, 2, 3);
     });
 
+    // 10b. Winter Hazard Ice Spikes (16x16)
+    this.drawPixelCanvas('tile_ice_spike', 16, 16, (ctx) => {
+      ctx.fillStyle = '#0284c7';
+      // Draw 2 crystalline ice spikes
+      ctx.beginPath();
+      ctx.moveTo(0, 16);
+      ctx.lineTo(4, 1);
+      ctx.lineTo(8, 16);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(8, 16);
+      ctx.lineTo(12, 1);
+      ctx.lineTo(16, 16);
+      ctx.fill();
+
+      // Inner cyan ice core
+      ctx.fillStyle = '#38bdf8';
+      ctx.beginPath();
+      ctx.moveTo(2, 16);
+      ctx.lineTo(4, 3);
+      ctx.lineTo(6, 16);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(10, 16);
+      ctx.lineTo(12, 3);
+      ctx.lineTo(14, 16);
+      ctx.fill();
+
+      // Gleaming sharp white tips
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(3, 1, 2, 4);
+      ctx.fillRect(11, 1, 2, 4);
+    });
+
+    // 10c. Winter Snow Ground (16x16) - Crisp White Platforms
+    this.drawPixelCanvas('tile_snow_ground', 16, 16, (ctx) => {
+      // Dark glacial rock base
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(0, 0, 16, 16);
+      ctx.fillStyle = '#334155';
+      ctx.fillRect(1, 7, 6, 4);
+      ctx.fillRect(9, 9, 6, 5);
+
+      // Ice crystal veins
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(4, 11, 3, 1);
+      ctx.fillRect(11, 7, 2, 2);
+
+      // Thick pure white snow cap (top 5 pixels)
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 16, 4);
+      ctx.fillRect(1, 4, 4, 1);
+      ctx.fillRect(7, 4, 5, 1);
+      ctx.fillRect(13, 4, 3, 1);
+
+      // Soft snow shading
+      ctx.fillStyle = '#e2e8f0';
+      ctx.fillRect(0, 3, 16, 1);
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillRect(2, 4, 2, 1);
+      ctx.fillRect(8, 4, 3, 1);
+
+      // Tiny icicle drips
+      ctx.fillStyle = '#cffafe';
+      ctx.fillRect(3, 5, 1, 2);
+      ctx.fillRect(10, 5, 1, 2);
+    });
+
+    // 10d. Winter Snow Wall (16x16) - Glacial Brick
+    this.drawPixelCanvas('tile_snow_wall', 16, 16, (ctx) => {
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, 16, 16);
+
+      // Frost-coated bricks
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(1, 1, 6, 6);
+      ctx.fillRect(8, 1, 7, 6);
+      ctx.fillRect(1, 8, 14, 7);
+
+      // Frozen cyan mortar
+      ctx.fillStyle = '#0369a1';
+      ctx.fillRect(0, 7, 16, 1);
+      ctx.fillRect(7, 0, 1, 7);
+
+      // White frost highlights & icicles
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(1, 1, 4, 1);
+      ctx.fillRect(8, 1, 5, 1);
+      ctx.fillRect(2, 8, 8, 1);
+
+      ctx.fillStyle = '#67e8f9';
+      ctx.fillRect(4, 4, 1, 2);
+      ctx.fillRect(11, 10, 2, 1);
+    });
+
     // 11. Dash Ability Orb (16x16)
     this.drawPixelCanvas('orb_dash', 16, 16, (ctx) => {
       // Glow aura
@@ -287,6 +384,14 @@ export class BootScene extends Phaser.Scene {
       ctx.fillRect(2, 2, 2, 2);
     });
 
+    this.drawPixelCanvas('particle_snow', 4, 4, (ctx) => {
+      ctx.fillStyle = '#e0f2fe';
+      ctx.fillRect(1, 0, 2, 4);
+      ctx.fillRect(0, 1, 4, 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(1, 1, 2, 2);
+    });
+
     // 13. Cavern Background Pillar (32x96)
     this.drawPixelCanvas('bg_pillar', 32, 96, (ctx) => {
       ctx.fillStyle = '#111827';
@@ -294,6 +399,22 @@ export class BootScene extends Phaser.Scene {
       ctx.fillStyle = '#1f2937';
       ctx.fillRect(4, 0, 24, 96);
       ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, 32, 8);
+      ctx.fillRect(0, 88, 32, 8);
+    });
+
+    // 13b. Winter Glacial Ice Pillar (32x96)
+    this.drawPixelCanvas('bg_ice_pillar', 32, 96, (ctx) => {
+      ctx.fillStyle = '#082f49';
+      ctx.fillRect(0, 0, 32, 96);
+      ctx.fillStyle = '#0c4a6e';
+      ctx.fillRect(4, 0, 24, 96);
+      ctx.fillStyle = '#075985';
+      ctx.fillRect(8, 0, 16, 96);
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(12, 10, 2, 30);
+      ctx.fillRect(16, 50, 2, 36);
+      ctx.fillStyle = '#0284c7';
       ctx.fillRect(0, 0, 32, 8);
       ctx.fillRect(0, 88, 32, 8);
     });
